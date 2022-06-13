@@ -11,7 +11,9 @@ app.use(express.json());
 
 // furniture
 // klfqUuWuLgP0xSwM
-
+// https://furniture-furnished-review.web.app/
+// https://github.com/sujoncham/furniture-furnished-review-server
+// https://github.com/sujoncham/furniture-furnished-review-client
 
 
 
