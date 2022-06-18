@@ -25,6 +25,7 @@ async function run(){
     try{
         await client.connect();
         const furnitureCollection = client.db('furnitureData').collection('furniture');
+        const profileCollection = client.db('furnitureData').collection('profile');
 
         app.get('/furniture', async(req, res)=>{
             const result = await furnitureCollection.find().toArray();
@@ -36,7 +37,27 @@ async function run(){
             const query = {_id:ObjectId(id)};
             const result = await furnitureCollection.findOne(query);
             res.send(result);
-        })
+        });
+
+        //update stock info
+        app.put('/profile/:id', async (req, res)=>{
+            const id = req.params.id;
+            const profileUpdate = req.body;
+            const filterStock = {_id:ObjectId(id)};
+            const optStock = {upsert:true};
+            const stockDoc = {
+                $set: {
+                    userName:profileUpdate.userName,
+                    fullName:profileUpdate.fullName,
+                    email:profileUpdate.email,
+                    description:profileUpdate.description,
+                    skills:profileUpdate.skills,
+                }
+            };
+            const result = await profileCollection.updateOne(filterStock, stockDoc, optStock);
+            res.send(result);
+        });
+
         
 
     }
