@@ -41,7 +41,7 @@ async function run(){
         });
 
         //update stock info
-        app.put('/profile/:id', async (req, res)=>{
+        app.post('/profile/:id', async (req, res)=>{
             const id = req.params.id;
             const profileUpdate = req.body;
             const filterStock = {_id:ObjectId(id)};
