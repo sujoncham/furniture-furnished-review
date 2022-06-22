@@ -26,6 +26,7 @@ async function run(){
         await client.connect();
         const furnitureCollection = client.db('furnitureData').collection('furniture');
         const profileCollection = client.db('furnitureData').collection('profile');
+        const orderCollection = client.db('furnitureData').collection('order');
 
         app.get('/furniture', async(req, res)=>{
             const result = await furnitureCollection.find().toArray();
@@ -57,6 +58,12 @@ async function run(){
             const result = await profileCollection.updateOne(filterStock, stockDoc, optStock);
             res.send(result);
         });
+
+        app.post('/furniture', async(req, res)=>{
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            res.send(result);
+        })
 
         
 
