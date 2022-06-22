@@ -41,21 +41,21 @@ async function run(){
         });
 
         //update stock info
-        app.post('/profile/:id', async (req, res)=>{
-            const id = req.params.id;
-            const profileUpdate = req.body;
-            const filterStock = {_id:ObjectId(id)};
-            const optStock = {upsert:true};
-            const stockDoc = {
-                $set: {
-                    userName:profileUpdate.userName,
-                    fullName:profileUpdate.fullName,
-                    email:profileUpdate.email,
-                    description:profileUpdate.description,
-                    skills:profileUpdate.skills,
-                }
-            };
-            const result = await profileCollection.updateOne(filterStock, stockDoc, optStock);
+        app.post('/profile', async (req, res)=>{
+            const profile = req.body;
+            // const profileUpdate = req.body;
+            // const filterStock = {_id:ObjectId(id)};
+            // const optStock = {upsert:true};
+            // const stockDoc = {
+            //     $set: {
+            //         userName:profileUpdate.userName,
+            //         fullName:profileUpdate.fullName,
+            //         email:profileUpdate.email,
+            //         description:profileUpdate.description,
+            //         skills:profileUpdate.skills,
+            //     }
+            // };
+            const result = await profileCollection.insertOne(profile);
             res.send(result);
         });
 
