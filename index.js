@@ -27,6 +27,25 @@ async function run(){
         const furnitureCollection = client.db('furnitureData').collection('furniture');
         const profileCollection = client.db('furnitureData').collection('profile');
         const orderCollection = client.db('furnitureData').collection('order');
+        const userCollection = client.db('furnitureData').collection('users');
+
+
+        app.get('/user/:email', async(req, res)=>{
+            const result = await userCollection.find().toArray();
+            res.send(result);
+        });
+
+        app.put('/user/:email', async (req, res)=>{
+            const email = req.params.email;
+            const user = req.body;
+            const filter = {email: email};
+            const options = {upsert: true};
+            const updateDoc = {
+                    $set: user,
+            };
+            const result = await userCollection.updateOne(filter, options, updateDoc);
+            res.send(result);
+        })
 
         app.get('/furniture', async(req, res)=>{
             const result = await furnitureCollection.find().toArray();
