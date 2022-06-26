@@ -40,6 +40,12 @@ async function run(){
             res.send(result);
         });
 
+        app.post('/furniture', async(req, res)=>{
+            const furniture = req.body;
+            const result = await orderCollection.insertOne(furniture);
+            res.send(result);
+        })
+
         //update stock info
         app.post('/profile', async (req, res)=>{
             const profile = req.body;
@@ -59,7 +65,7 @@ async function run(){
             res.send(result);
         });
 
-        app.post('/furniture', async(req, res)=>{
+        app.post('/order', async(req, res)=>{
             const order = req.body;
             const result = await orderCollection.insertOne(order);
             res.send(result);
