@@ -30,10 +30,10 @@ async function run(){
         const userCollection = client.db('furnitureData').collection('users');
 
 
-        app.get('/user/:email', async(req, res)=>{
-            const result = await userCollection.find().toArray();
-            res.send(result);
-        });
+        // app.get('/user/:email', async(req, res)=>{
+        //     const result = await userCollection.find().toArray();
+        //     res.send(result);
+        // });
 
         app.put('/user/:email', async (req, res)=>{
             const email = req.params.email;
@@ -41,9 +41,10 @@ async function run(){
             const filter = {email: email};
             const options = {upsert: true};
             const updateDoc = {
-                    $set: user,
+                    $set: {user, 
+                        name: user.name}
             };
-            const result = await userCollection.updateOne(filter, options, updateDoc);
+            const result = await userCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
 
