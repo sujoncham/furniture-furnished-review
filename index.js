@@ -1,6 +1,7 @@
 const express = require('express');
 const port = process.env.PORT || 5000;
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
@@ -37,6 +38,8 @@ async function run(){
 
         app.put('/user/:email', async (req, res)=>{
             const email = req.params.email;
+            const authorization = req.headers;
+            console.log('first', authorization);
             const user = req.body;
             const filter = {email: email};
             const options = {upsert: true};
@@ -44,7 +47,8 @@ async function run(){
                     $set: user,
             };
             const result = await userCollection.updateOne(filter, updateDoc, options);
-            res.send(result);
+            const token = jwt.sign({email:email}, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
+            res.send({result, token});
         })
 
         app.get('/furniture', async(req, res)=>{
