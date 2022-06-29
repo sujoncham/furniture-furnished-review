@@ -26,17 +26,16 @@ async function run(){
     try{
         await client.connect();
         const furnitureCollection = client.db('furnitureData').collection('furniture');
-        const profileCollection = client.db('furnitureData').collection('profile');
         const orderCollection = client.db('furnitureData').collection('order');
         const userCollection = client.db('furnitureData').collection('users');
 
 
-        // app.get('/user/:email', async(req, res)=>{
-        //     const result = await userCollection.find().toArray();
-        //     res.send(result);
-        // });
+        app.get('/user', async(req, res)=>{
+            const result = await userCollection.find().toArray();
+            res.send(result);
+        });
 
-        app.put('/user/:email', async (req, res)=>{
+        app.put('/user/:id', async (req, res)=>{
             const email = req.params.email;
             const authorization = req.headers;
             console.log('first', authorization);
@@ -69,24 +68,6 @@ async function run(){
             res.send(result);
         })
 
-        //update stock info
-        app.post('/profile', async (req, res)=>{
-            const profile = req.body;
-            // const profileUpdate = req.body;
-            // const filterStock = {_id:ObjectId(id)};
-            // const optStock = {upsert:true};
-            // const stockDoc = {
-            //     $set: {
-            //         userName:profileUpdate.userName,
-            //         fullName:profileUpdate.fullName,
-            //         email:profileUpdate.email,
-            //         description:profileUpdate.description,
-            //         skills:profileUpdate.skills,
-            //     }
-            // };
-            const result = await profileCollection.insertOne(profile);
-            res.send(result);
-        });
 
         app.get('/order', async(req, res)=>{
             const result = await orderCollection.find().toArray();
@@ -99,7 +80,6 @@ async function run(){
             res.send(result);
         })
 
-        
 
     }
     finally{
