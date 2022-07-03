@@ -3,7 +3,6 @@ const port = process.env.PORT || 5000;
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-require('dotenv').config();
 const app = express();
 require('dotenv').config();
 
@@ -35,7 +34,39 @@ async function run(){
             res.send(result);
         });
 
-        app.put('/user/:id', async (req, res)=>{
+        app.get('/user/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const result = await userCollection.findOne(query);
+            res.send(result);
+        });
+
+        app.get('/user/:email', async(req, res)=>{
+            const email = req.params.email;
+            const query = {email:email};
+            const result = await userCollection.findOne(query);
+            res.send(result);
+        });
+
+        app.put('/user/:id', async(req, res)=>{
+            const id = req.params.id;
+            const updateUser = req.body;
+            const filter = {_id:ObjectId(id)};
+            const options = {upsert:true};
+            const updatedDoc = {
+                $set:{
+                    name:updateUser.name,
+                    email:updateUser.email,
+                    fullName: updateUser.fullName,
+                    description:updateUser.description,
+                    skills:updateUser.skills,
+                }
+            }
+            const result = await userCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
+
+        app.put('/user/:email', async (req, res)=>{
             const email = req.params.email;
             const authorization = req.headers;
             console.log('first', authorization);
@@ -77,6 +108,13 @@ async function run(){
         app.post('/order', async(req, res)=>{
             const order = req.body;
             const result = await orderCollection.insertOne(order);
+            res.send(result);
+        })
+
+        app.delete('/order/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const result = await orderCollection.deleteOne(query);
             res.send(result);
         })
 
