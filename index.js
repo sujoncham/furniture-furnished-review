@@ -95,7 +95,7 @@ async function run(){
 
         app.post('/furniture', async(req, res)=>{
             const furniture = req.body;
-            const result = await orderCollection.insertOne(furniture);
+            const result = await furnitureCollection.insertOne(furniture);
             res.send(result);
         })
 
