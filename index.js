@@ -27,6 +27,8 @@ async function run(){
         const furnitureCollection = client.db('furnitureData').collection('furniture');
         const orderCollection = client.db('furnitureData').collection('order');
         const userCollection = client.db('furnitureData').collection('users');
+        const blogCollection = client.db('furnitureData').collection('blogs');
+        const reviewsCollection = client.db('furnitureData').collection('reviews');
 
 
         app.get('/user', async(req, res)=>{
@@ -99,6 +101,11 @@ async function run(){
             res.send(result);
         })
 
+        app.get('/reviews', async(req, res)=>{
+            const result = await reviewsCollection.find().toArray()
+            res.send(result);
+        })
+
 
         app.get('/order', async(req, res)=>{
             const result = await orderCollection.find().toArray();
@@ -115,6 +122,17 @@ async function run(){
             const id = req.params.id;
             const query = {_id:ObjectId(id)};
             const result = await orderCollection.deleteOne(query);
+            res.send(result);
+        });
+
+        app.get('/blog', async(req, res)=>{
+            const result = await blogCollection.find().toArray();
+            res.send(result);
+        });
+
+        app.post('/blog', async(req, res)=>{
+            const blog = req.body;
+            const result = await blogCollection.insertOne(blog);
             res.send(result);
         })
 
